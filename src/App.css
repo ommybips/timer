@@ -1,0 +1,42 @@
+#root {
+  text-align: center;
+  color: #fffdec;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #86a788;
+}
+
+.break-container,
+.session-container,
+#break-length,
+#session-length {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.timer-container {
+  border: #ffe2e2 10px solid;
+  border-radius: 20px;
+  width: 200px;
+  margin: 0 auto;
+}
+
+.controller {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 10px;
+}
+
+.controller i {
+  margin: 0 10px;
+}
+
+i {
+  cursor: pointer;
+}
