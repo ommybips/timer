@@ -8,6 +8,7 @@ function App() {
   const [timerDisplay, setTimerDisplay] = useState(25 * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [displayText, setDisplayText] = useState("Session");
+  const [pauseAtZero, setPauseAtZero] = useState(false);
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
@@ -64,32 +65,40 @@ function App() {
     if (isRunning && timerDisplay > 0) {
       interval = setInterval(() => {
         setTimerDisplay((prevTime) => prevTime - 1);
-      }, 200);
+      }, 1000);
     }
 
-    // Stop the timer when time reaches 0
-    if (timerDisplay === 0) {
+    if (timerDisplay === 0 && !pauseAtZero) {
+      setPauseAtZero(true);
       if (audio.current) {
         audio.current.play().catch((err) => {
           console.error("Audio play failed:", err);
         });
-        setTimeout(() => {
-          audio.current.pause();
-          audio.current.currentTime = 0;
-        }, 1000);
-      }
-      if (displayText === "Session") {
-        setDisplayText("Break");
-        setTimerDisplay(breakLength * 60);
-      } else {
-        setDisplayText("Session");
-        setTimerDisplay(sessionLength * 60);
-        // setIsRunning(false);
       }
     }
 
-    return () => clearInterval(interval); // Cleanup interval
-  }, [isRunning, timerDisplay, breakLength, sessionLength, displayText]);
+    if (pauseAtZero) {
+      interval = setTimeout(() => {
+        setPauseAtZero(false);
+        if (displayText === "Session") {
+          setDisplayText("Break");
+          setTimerDisplay(breakLength * 60);
+        } else if (displayText === "Break") {
+          setDisplayText("Session");
+          setTimerDisplay(sessionLength * 60);
+        }
+      }, 1000);
+    }
+
+    return () => clearInterval(interval);
+  }, [
+    isRunning,
+    timerDisplay,
+    breakLength,
+    sessionLength,
+    displayText,
+    pauseAtZero,
+  ]);
 
   return (
     <>
@@ -131,6 +140,7 @@ function App() {
         <i className="fa fa-pause fa-2x" id="pause" onClick={stop}></i>
         <i className="fa fa-refresh fa-2x" id="reset" onClick={reset}></i>
       </div>
+      <p>coded and designed by ommybips</p>
       <audio
         id="beep"
         preload="auto"

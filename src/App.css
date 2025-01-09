@@ -23,7 +23,7 @@ body {
   border: #ffe2e2 10px solid;
   border-radius: 20px;
   width: 200px;
-  margin: 0 auto;
+  margin: 20px auto;
 }
 
 .controller {
@@ -39,4 +39,8 @@ body {
 
 i {
   cursor: pointer;
+}
+
+.session-container {
+  margin-left: 50px;
 }
